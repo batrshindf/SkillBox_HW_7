@@ -10,14 +10,25 @@ namespace SkillBox_HW_7
     {
         static void Main(string[] args)
         {
-            Employee employee1 = new Employee(1, DateTime.Now, "Батршин Денис Фанилевич", 29, 165,
-                new DateTime(1992, 03, 29), "Город Нягань");
+            Repository rep = new Repository(RequestPath());
 
-            employee1.Print();
+            rep.Load();
+            rep.PrintToConsole();
+            Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.CountEmployee}");
+            
 
             Console.ReadKey();
 
         }
-            
+
+        /// <summary>
+        ///     Путь к файлу. Запрашиваем путь к файлу с данными
+        /// </summary>
+        private static string RequestPath()
+        {
+            Console.WriteLine(
+                "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
+            return Console.ReadLine();
+        }
     }
 }

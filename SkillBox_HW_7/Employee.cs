@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +24,8 @@ namespace SkillBox_HW_7
         /// <param name="height">Рост</param>
         /// <param name="dateOfBirth">Дата Рождения</param>
         /// <param name="placeOfBirth">Место рождения</param>
-        public Employee(int id, DateTime dataTimeRecordAdd, string fullName, byte age, byte height, DateTime dateOfBirth, string placeOfBirth)
+        public Employee(int id, DateTime dataTimeRecordAdd, string fullName, byte age, byte height, DateTime dateOfBirth, 
+            string placeOfBirth)
         {
             this.id = id;
             this.dataTimeRecordAdd = dataTimeRecordAdd;
@@ -133,14 +137,12 @@ namespace SkillBox_HW_7
         private string placeOfBirth;
 
         #endregion
-
-        #region Методы
-
-        public void Print()
+        
+        public string Print()
         {
-            Console.WriteLine($"{id} {dataTimeRecordAdd}\t{fullName}\t\t{age}\t{height}\t{dateOfBirth}\t{placeOfBirth}");
+            return $"{id, 6} {dataTimeRecordAdd.ToString("dd.MM.yyyy hh:mm"), 18} {fullName, 30} {age, 5}" +
+                   $" {height, 7} {dateOfBirth.ToString("dd.MM.yyyy"), 15} {placeOfBirth, 15}";
         }
 
-        #endregion
     }
 }
