@@ -49,6 +49,35 @@ namespace SkillBox_HW_7
             this.index++;
         }
 
+        public void AddFromTheConsole()
+        {
+            Console.Clear();
+            bool a = true;
+
+            while (a)
+            {
+                Console.Write("Введите Ф.И.О. сотрудника: ");
+                string fullName = Console.ReadLine();
+
+                Console.Write("Введите возраст сотрудника: ");
+                byte age = Convert.ToByte(Console.ReadLine());
+
+                Console.Write("Введите рост сотрудника: ");
+                byte height = Convert.ToByte(Console.ReadLine());
+
+                Console.Write("Введите дату рождения сотрудника: ");
+                DateTime dateOfBirth = Convert.ToDateTime(Console.ReadLine());
+
+                Console.Write("Введите место рождения сотрудника: ");
+                string placeOfBirth = Console.ReadLine();
+
+                Add(new Employee(this.index++, DateTime.Now, fullName, age, height, dateOfBirth, placeOfBirth));
+
+                Console.Write("Хотите добавить ещё одного сотрудника? (да/нет): ");
+                if (Equals(Console.ReadLine().ToLower(), "нет")) { a = false; }
+            }
+        }
+
         /// <summary>
         ///     Загрузка данных в память
         /// </summary>
@@ -72,7 +101,7 @@ namespace SkillBox_HW_7
         ///     Сохранение
         /// </summary>
         /// <param name="outputPath">Путь файла для записи</param>
-        public void Save(string outputPath)
+        public void Save()
         {
             string outputText = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
                 this.titles[0],
@@ -83,7 +112,7 @@ namespace SkillBox_HW_7
                 this.titles[5],
                 this.titles[6]);
 
-            File.AppendAllText(outputPath, $"{outputText}\n");
+            File.AppendAllText(this.path, $"{outputText}\n");
 
             for (int i = 0; i < this.index; i++)
             {
@@ -96,7 +125,7 @@ namespace SkillBox_HW_7
                     this.employees[5].DateOfBirth,
                     this.employees[6].PlaceOfBirth);
 
-                File.AppendAllText(outputPath, $"{outputText}\n");
+                File.AppendAllText(this.path, $"{outputText}\n");
             }
 
         }
@@ -120,20 +149,5 @@ namespace SkillBox_HW_7
         ///     Подсчет кол-ва сотрудников
         /// </summary>
         public int GetCountEmployee { get { return this.index; } }
-
-        /// <summary>
-        ///     Путь к файлу. Запрашиваем путь к файлу с данными
-        /// </summary>
-        /// <returns></returns>
-        private string GetRequestPath
-        {
-            get
-            {
-                Console.WriteLine(
-                    "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
-                return Console.ReadLine();
-            }
-        }
-       
     }
 }
