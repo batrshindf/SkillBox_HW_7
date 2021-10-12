@@ -10,11 +10,11 @@ namespace SkillBox_HW_7
     {
         static void Main(string[] args)
         {
-            Repository rep = new Repository(RequestPath());
+            Repository rep = new Repository();
 
             rep.Load();
             rep.PrintToConsole();
-            Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.CountEmployee}");
+            Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.GetCountEmployee}");
             
 
             Console.ReadKey();
@@ -24,11 +24,12 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     Путь к файлу. Запрашиваем путь к файлу с данными
         /// </summary>
-        private static string RequestPath()
-        {
-            Console.WriteLine(
-                "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
-            return Console.ReadLine();
-        }
+        //private static string RequestPath()
+        //{
+        //    Console.WriteLine(
+        //        "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
+        //    return Console.ReadLine();
+        //}
+        
     }
 }

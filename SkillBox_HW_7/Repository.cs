@@ -10,17 +10,17 @@ namespace SkillBox_HW_7
     struct Repository
     {
         private Employee[] employees; // Основной массив для хранения данных
-        private string inputPath; // Путь к файлу
+        private string path; // Путь к файлу
         private int index; // текущий элемент для добавления в employees
         private string[] titles; // Массив заголовков
 
         /// <summary>
         ///     Конструктор
         /// </summary>
-        /// <param name="inputPath">Путь к файлу с данными</param>
-        public Repository(string inputPath)
+        /// <param name="path">Путь к файлу с данными</param>
+        public Repository(string path)
         {
-            this.inputPath = inputPath;
+            this.path = path;
             this.index = 0;
             this.titles = new string[0];
             this.employees = new Employee[1];
@@ -54,7 +54,7 @@ namespace SkillBox_HW_7
         /// </summary>
         public void Load()
         {
-            using (StreamReader sr = new StreamReader(this.inputPath))
+            using (StreamReader sr = new StreamReader(this.path))
             {
                 titles = sr.ReadLine().Split('#');
 
@@ -115,28 +115,25 @@ namespace SkillBox_HW_7
                 Console.WriteLine(this.employees[i].Print());
             }
         }
+        
+        /// <summary>
+        ///     Подсчет кол-ва сотрудников
+        /// </summary>
+        public int GetCountEmployee { get { return this.index; } }
 
-        public int CountEmployee { get { return this.index; } }
-
-        private void CheckTxtRequestPath()
+        /// <summary>
+        ///     Путь к файлу. Запрашиваем путь к файлу с данными
+        /// </summary>
+        /// <returns></returns>
+        private string GetRequestPath
         {
-            var temp = File.Exists(this.inputPath);
-
-            if (inputPath[inputPath.Length - 1] != 't' && inputPath[inputPath.Length - 2] != 'x' &&
-                inputPath[inputPath.Length - 3] != 't')
+            get
             {
-                temp = false;
-            }
-
-            if (inputPath.LastIndexOf('.') == -1 || temp == false)
-            {
-                Console.Clear();
                 Console.WriteLine(
-                    "Такого файла не существует или у файла нет или неправильное расширение. Установите расширение (txt) " +
-                    "или создайте файл с данным расширением.");
-                Console.ReadKey();
-                Environment.Exit(0);
+                    "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
+                return Console.ReadLine();
             }
         }
+       
     }
 }
