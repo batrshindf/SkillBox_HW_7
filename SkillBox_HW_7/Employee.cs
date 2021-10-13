@@ -80,7 +80,7 @@ namespace SkillBox_HW_7
         public int Id
         {
             get => id;
-            private set => id = value;
+            set => id = value;
         }
 
         /// <summary>
@@ -180,8 +180,7 @@ namespace SkillBox_HW_7
 
         public string Print()
         {
-            return $"{id,6} {dataTimeRecordAdd.ToString("dd.MM.yyyy hh:mm"),18} {fullName,30} {age,5}" +
-                   $" {height,7} {dateOfBirth.ToString("dd.MM.yyyy"),15} {placeOfBirth,15}";
+            return $"{id,6} {dataTimeRecordAdd,18:dd.MM.yyyy hh:mm} {fullName,30} {age,5} {height,7} {dateOfBirth,15:dd.MM.yyyy} {placeOfBirth,15}";
         }
     }
 }

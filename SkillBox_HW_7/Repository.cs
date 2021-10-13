@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkillBox_HW_7
 {
     struct Repository
     {
         private Employee[] employees; // Основной массив для хранения данных
-        private string path; // Путь к файлу
+        private readonly string path; // Путь к файлу
         private int index; // текущий элемент для добавления в employees
         private string[] titles; // Массив заголовков
 
@@ -22,7 +18,7 @@ namespace SkillBox_HW_7
         {
             this.path = path;
             this.index = 0;
-            this.titles = new string[0];
+            this.titles = Array.Empty<string>();
             this.employees = new Employee[1];
         }
 
@@ -37,6 +33,30 @@ namespace SkillBox_HW_7
                 Array.Resize(ref this.employees, this.employees.Length * 2);
             }
         }
+
+        /// <summary>
+        ///     Метод удаления записи о сотруднике
+        /// </summary>
+        public void Del()
+        {
+            Console.Write("Введите Id сотрудника, который нужно удалить: ");
+            var elementArr = int.Parse(Console.ReadLine());
+            for (int i = 0; i < index; i++)
+            {
+                if (Equals(elementArr,employees[i].Id))
+                {
+                    for (int j = i; j <= index; j++)
+                    {
+                        employees[j] = employees[j + 1];
+                        employees[j].Id--;
+                    }
+
+                    index--;
+                    break;
+                }
+            }
+        }
+
 
         /// <summary>
         ///     Добавление сотрудника
@@ -71,10 +91,11 @@ namespace SkillBox_HW_7
                 Console.Write("Введите место рождения сотрудника: ");
                 string placeOfBirth = Console.ReadLine();
 
-                Add(new Employee(this.index++, DateTime.Now, fullName, age, height, dateOfBirth, placeOfBirth));
+
+                Add(new Employee(this.index + 1, DateTime.Now, fullName, age, height, dateOfBirth, placeOfBirth));
 
                 Console.Write("Хотите добавить ещё одного сотрудника? (да/нет): ");
-                if (Equals(Console.ReadLine().ToLower(), "нет")) { a = false; }
+                if (Equals(Console.ReadLine()?.ToLower(), "нет")) { a = false; }
             }
         }
 
@@ -85,13 +106,13 @@ namespace SkillBox_HW_7
         {
             using (StreamReader sr = new StreamReader(this.path))
             {
-                titles = sr.ReadLine().Split('#');
+                titles = sr.ReadLine()?.Split('#');
 
                 while (!sr.EndOfStream)
                 {
-                    string[] param = sr.ReadLine().Split('#');
-                    Add(new Employee(Convert.ToInt32(param[0]), Convert.ToDateTime(param[1]), param[2], 
-                        Convert.ToByte(param[3]), Convert.ToByte(param[4]), Convert.ToDateTime(param[5]), 
+                    string[] param = sr.ReadLine()?.Split('#');
+                    Add(new Employee(Convert.ToInt32(param[0]), Convert.ToDateTime(param[1]), param[2],
+                        Convert.ToByte(param[3]), Convert.ToByte(param[4]), Convert.ToDateTime(param[5]),
                         param[6]));
                 }
             }
@@ -103,27 +124,16 @@ namespace SkillBox_HW_7
         /// <param name="outputPath">Путь файла для записи</param>
         public void Save()
         {
-            string outputText = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
-                this.titles[0],
-                this.titles[1],
-                this.titles[2],
-                this.titles[3],
-                this.titles[4],
-                this.titles[5],
-                this.titles[6]);
+            string outputText = 
+                $"{this.titles[0]}#{this.titles[1]}#{this.titles[2]}#{this.titles[3]}#{this.titles[4]}#{this.titles[5]}#{this.titles[6]}";
 
-            File.AppendAllText(this.path, $"{outputText}\n");
+            File.WriteAllText(path, $"{outputText}\n");
 
             for (int i = 0; i < this.index; i++)
             {
-                outputText = String.Format("{0}#{1}#{2}#{3}#{4}#{5}#{6}",
-                    this.employees[0].Id,
-                    this.employees[1].DataTimeRecordAdd,
-                    this.employees[2].FullName,
-                    this.employees[3].Age,
-                    this.employees[4].Height,
-                    this.employees[5].DateOfBirth,
-                    this.employees[6].PlaceOfBirth);
+                outputText = $"{this.employees[i].Id}#{this.employees[i].DataTimeRecordAdd:dd.MM.yyyy hh:mm}#{this.employees[i].FullName}#" +
+                             $"{this.employees[i].Age}#{this.employees[i].Height}#{this.employees[i].DateOfBirth:dd.MM.yyyy}#" +
+                             $"{this.employees[i].PlaceOfBirth}";
 
                 File.AppendAllText(this.path, $"{outputText}\n");
             }
@@ -136,15 +146,15 @@ namespace SkillBox_HW_7
         public void PrintToConsole()
         {
             Console.Clear();
-            Console.WriteLine($"{this.titles[0], 6} {this.titles[1], 16} {this.titles[2], 15} {this.titles[3], 20} " +
-                              $"{this.titles[4], 5} {this.titles[5], 15} {this.titles[6], 15}");
+            Console.WriteLine($"{this.titles[0],6} {this.titles[1],16} {this.titles[2],15} {this.titles[3],20} {this.titles[4],5} " +
+                              $"{this.titles[5],15} {this.titles[6],15}");
 
             for (int i = 0; i < index; i++)
             {
                 Console.WriteLine(this.employees[i].Print());
             }
         }
-        
+
         /// <summary>
         ///     Подсчет кол-ва сотрудников
         /// </summary>

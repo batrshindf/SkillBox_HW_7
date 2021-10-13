@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkillBox_HW_7
 {
@@ -18,10 +14,16 @@ namespace SkillBox_HW_7
             Console.ReadKey();
 
 
-            rep.AddFromTheConsole();
-            rep.PrintToConsole();
+            //rep.AddFromTheConsole();
+            //rep.PrintToConsole();
+
+            //Console.ReadKey();
 
             //rep.Save();
+
+            rep.Del();
+            rep.PrintToConsole();
+            Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.GetCountEmployee}");
 
             Console.ReadKey();
 
