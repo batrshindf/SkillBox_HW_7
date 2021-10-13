@@ -7,7 +7,7 @@ namespace SkillBox_HW_7
         static void Main(string[] args)
         {
             Repository rep = new Repository(RequestPath());
-
+            
             rep.Load();
             rep.PrintToConsole();
             Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.GetCountEmployee}");
@@ -22,7 +22,10 @@ namespace SkillBox_HW_7
             //rep.Save();
 
             // rep.Del();
-            rep.Edit();
+            // rep.Edit();
+            rep.SortAscending();
+
+
             rep.PrintToConsole();
             Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.GetCountEmployee}");
 

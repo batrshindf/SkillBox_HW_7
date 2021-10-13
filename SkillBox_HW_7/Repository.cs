@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace SkillBox_HW_7
 {
@@ -191,5 +192,12 @@ namespace SkillBox_HW_7
         ///     Подсчет кол-ва сотрудников
         /// </summary>
         public int GetCountEmployee { get { return this.index; } }
+
+        public void SortAscending()
+        {
+           employees = employees.OrderBy(i => i.DataTimeRecordAdd).ToArray().;
+           
+        }
+
     }
 }
