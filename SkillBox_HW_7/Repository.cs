@@ -56,8 +56,37 @@ namespace SkillBox_HW_7
                 }
             }
         }
+        
+        /// <summary>
+        ///     Редактрование записи о сотруднике
+        /// </summary>
+        public void Edit()
+        {
+            Console.Write("Введите Id сотрудника, запись которого надо отредактировать: ");
+            var elementArr = int.Parse(Console.ReadLine());
 
+            for (int i = 0; i < index; i++)
+            {
+                if (Equals(elementArr, employees[i].Id))
+                {
+                    Console.Write("Введите Ф.И.О. сотрудника: ");
+                    employees[i].FullName = Console.ReadLine();
 
+                    Console.Write("Введите возраст сотрудника: ");
+                    employees[i].Age = Convert.ToByte(Console.ReadLine());
+
+                    Console.Write("Введите рост сотрудника: ");
+                    employees[i].Height = Convert.ToByte(Console.ReadLine());
+
+                    Console.Write("Введите дату рождения сотрудника: ");
+                    employees[i].DateOfBirth = Convert.ToDateTime(Console.ReadLine());
+
+                    Console.Write("Введите место рождения сотрудника: ");
+                    employees[i].PlaceOfBirth = Console.ReadLine();
+                }
+            }
+        }
+        
         /// <summary>
         ///     Добавление сотрудника
         /// </summary>
@@ -69,6 +98,9 @@ namespace SkillBox_HW_7
             this.index++;
         }
 
+        /// <summary>
+        ///     Добавление сотрудника поьзователем в консоле.
+        /// </summary>
         public void AddFromTheConsole()
         {
             Console.Clear();

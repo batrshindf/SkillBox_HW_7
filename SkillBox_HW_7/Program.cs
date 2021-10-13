@@ -21,7 +21,8 @@ namespace SkillBox_HW_7
 
             //rep.Save();
 
-            rep.Del();
+            // rep.Del();
+            rep.Edit();
             rep.PrintToConsole();
             Console.WriteLine($"\n\nОбщее количество сотрудников: {rep.GetCountEmployee}");
 
