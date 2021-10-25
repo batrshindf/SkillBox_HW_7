@@ -195,7 +195,7 @@ namespace SkillBox_HW_7
 
         public void SortAscending()
         {
-           employees = employees.OrderBy(i => i.DataTimeRecordAdd).ToArray().;
+           employees = employees.OrderBy(i => i.DataTimeRecordAdd).ToArray();
            
         }
 

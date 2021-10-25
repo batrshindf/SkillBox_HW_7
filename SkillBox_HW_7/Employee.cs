@@ -16,7 +16,7 @@ namespace SkillBox_HW_7
         /// <param name="height">Рост</param>
         /// <param name="dateOfBirth">Дата Рождения</param>
         /// <param name="placeOfBirth">Место рождения</param>
-        public Employee(int id, DateTime dataTimeRecordAdd, string fullName, byte age, byte height,
+        public Employee(int id, DateTime dataTimeRecordAdd, string fullName, int age, int height,
             DateTime dateOfBirth, string placeOfBirth)
         {
             this.id = id;
@@ -35,7 +35,7 @@ namespace SkillBox_HW_7
         /// <param name="age">Возраст</param>
         /// <param name="height">Рост</param>
         /// <param name="dateOfBirth">Дата Рождения</param>
-        public Employee(string fullName, byte age, byte height, DateTime dateOfBirth) :
+        public Employee(string fullName, int age, int height, DateTime dateOfBirth) :
             this(10000, DateTime.Now, fullName, age, height, dateOfBirth, "Null")
         {
         }
@@ -46,7 +46,7 @@ namespace SkillBox_HW_7
         /// <param name="fullName">Ф.И.О.</param>
         /// <param name="age">Возраст</param>
         /// <param name="height">Рост</param>
-        public Employee(string fullName, byte age, byte height) :
+        public Employee(string fullName, int age, int height) :
             this(fullName, age, height, new DateTime(1643, 1, 4))
         {
         }
@@ -56,7 +56,7 @@ namespace SkillBox_HW_7
         /// </summary>
         /// <param name="fullName">Ф.И.О.</param>
         /// <param name="age">Возраст</param>
-        public Employee(string fullName, byte age) :
+        public Employee(string fullName, int age) :
             this(fullName, age, 0)
         {
         }
@@ -104,7 +104,7 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     Возраст
         /// </summary>
-        public byte Age
+        public int Age
         {
             get => age;
             set => age = value;
@@ -113,7 +113,7 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     Рост
         /// </summary>
-        public byte Height
+        public int Height
         {
             get => height;
             set => height = value;
@@ -159,12 +159,12 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     Возраст
         /// </summary>
-        private byte age;
+        private int age;
 
         /// <summary>
         ///     Рост
         /// </summary>
-        private byte height;
+        private int height;
 
         /// <summary>
         ///     Дата родждения
