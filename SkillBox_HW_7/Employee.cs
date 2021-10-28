@@ -19,13 +19,13 @@ namespace SkillBox_HW_7
         public Employee(int id, DateTime dataTimeRecordAdd, string fullName, int age, int height,
             DateTime dateOfBirth, string placeOfBirth)
         {
-            this.id = id;
-            this.dataTimeRecordAdd = dataTimeRecordAdd;
-            this.fullName = fullName;
-            this.age = age;
-            this.height = height;
-            this.dateOfBirth = dateOfBirth;
-            this.placeOfBirth = placeOfBirth;
+            this._id = id;
+            this._dataTimeRecordAdd = dataTimeRecordAdd;
+            this._fullName = fullName;
+            this._age = age;
+            this._height = height;
+            this._dateOfBirth = dateOfBirth;
+            this._placeOfBirth = placeOfBirth;
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public int Id
         {
-            get => id;
-            set => id = value;
+            get => _id;
+            set => _id = value;
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public DateTime DataTimeRecordAdd
         {
-            get => dataTimeRecordAdd;
-            private set => dataTimeRecordAdd = value;
+            get => _dataTimeRecordAdd;
+            private set => _dataTimeRecordAdd = value;
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public string FullName
         {
-            get => fullName;
-            set => fullName = value;
+            get => _fullName;
+            set => _fullName = value;
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public int Age
         {
-            get => age;
-            set => age = value;
+            get => _age;
+            set => _age = value;
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public int Height
         {
-            get => height;
-            set => height = value;
+            get => _height;
+            set => _height = value;
         }
 
         /// <summary>
@@ -124,8 +124,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public DateTime DateOfBirth
         {
-            get => dateOfBirth;
-            set => dateOfBirth = value;
+            get => _dateOfBirth;
+            set => _dateOfBirth = value;
         }
 
         /// <summary>
@@ -133,8 +133,8 @@ namespace SkillBox_HW_7
         /// </summary>
         public string PlaceOfBirth
         {
-            get => placeOfBirth;
-            set => placeOfBirth = value;
+            get => _placeOfBirth;
+            set => _placeOfBirth = value;
         }
 
         #endregion
@@ -144,43 +144,49 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     ID сотрудника
         /// </summary>
-        private int id;
+        private int _id;
 
         /// <summary>
         ///     Дата и время добавления завписи
         /// </summary>
-        private DateTime dataTimeRecordAdd;
+        private DateTime _dataTimeRecordAdd;
 
         /// <summary>
         ///     Ф.И.О.
         /// </summary>
-        private string fullName;
+        private string _fullName;
 
         /// <summary>
         ///     Возраст
         /// </summary>
-        private int age;
+        private int _age;
 
         /// <summary>
         ///     Рост
         /// </summary>
-        private int height;
+        private int _height;
 
         /// <summary>
         ///     Дата родждения
         /// </summary>
-        private DateTime dateOfBirth;
+        private DateTime _dateOfBirth;
 
         /// <summary>
         ///     Место рождения
         /// </summary>
-        private string placeOfBirth;
+        private string _placeOfBirth;
 
         #endregion
 
         public string Print()
         {
-            return $"{id,6} {dataTimeRecordAdd,18:dd.MM.yyyy hh:mm} {fullName,30} {age,5} {height,7} {dateOfBirth,15:dd.MM.yyyy} {placeOfBirth,15}";
+            return $"{_id,6} {_dataTimeRecordAdd,18:dd.MM.yyyy hh:mm} {_fullName,30} {_age,5} {_height,7} " +
+                   $"{_dateOfBirth,15:dd.MM.yyyy} {_placeOfBirth,15}";
+        }
+        public string PrintToFile()
+        {
+            return $"{_id}#{_dataTimeRecordAdd:dd.MM.yyyy hh:mm}#{_fullName}#{_age}#{_height}#{_dateOfBirth:dd.MM.yyyy}" +
+                   $"#{_placeOfBirth}";
         }
     }
 }

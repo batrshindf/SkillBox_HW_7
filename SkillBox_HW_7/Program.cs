@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SkillBox_HW_7
 {
     internal class Program
     {
-        private static string path; // Путь к файлу
-        private static int index; // текущий элемент для добавления в employees (Счетчик записей о сотрудниках)
-        private static int indexID; // последний ID работника в DB
-        //private static readonly string checkYesNo = "нет ytn no да lf yes";
-        //private static readonly string checkNo = "нет ytn no";
-        //private static string inputYesNo;
-
-        private static string[] titles =
+        private static string _path; // Путь к файлу
+        private static int _index; // текущий элемент для добавления в employees (Счетчик записей о сотрудниках)
+        private static int _indexId; // последний ID работника в DB
+        private static readonly string[] _titles =
         {
-            "ID", "Дата и время создания", "ФИО", "Возраст", "Рост",
-            "Дата рождения", "Место рождения"
+            "ID", "Дата и время создания", "ФИО", "Возраст", "Рост", "Дата рождения", "Место рождения"
         }; // Массив заголовков
-        
-        private static readonly List<Employee> employees = new List<Employee>(); // Коллекция
+        private static List<Employee> employees = new List<Employee>(); // Коллекция
 
         private static void Main(string[] args)
         {
@@ -37,14 +32,16 @@ namespace SkillBox_HW_7
         private static void Menu()
         {
             Console.WriteLine(
-                "\n\n1. Загрузка всех данных из файла.\n2. Добавление сотрудника.\n3. Удаление записи.\n4. Редактирование записи." +
-                "\n5. Выход.");
+                "\n\n1. Загрузка всех данных из файла.\n2. Добавление сотрудника.\n3. Удаление записи." +
+                "\n4. Редактирование записи.\n5. Сохранить в файл.\n6. Загрузка данных в диапозоне дат." +
+                "\n7. Сортировка по возрастанию даты создания записи.\n8. Сортировка по убыванию даты создания записи. " +
+                "\n9. Очистить память.\n10. Выход.");
             Console.Write("\nВыберите пункт меню: ");
 
             switch (Console.ReadLine())
             {
                 case "1":
-                    index = 0;
+                    _index = 0;
                     Load();
                     PrintToConsole();
                     break;
@@ -61,6 +58,31 @@ namespace SkillBox_HW_7
                     PrintToConsole();
                     break;
                 case "5":
+                    Console.Clear();
+                    Save();
+                    PrintToConsole();
+                    Console.WriteLine($"\n\nДанные успешно сохранены в файл: {_path}");
+                    break;
+                case "6":
+                    UploadByDate();
+                    PrintToConsole();
+                    break;
+                case "7":
+                    Console.Clear();
+                    SortUp();
+                    PrintToConsole();
+                    break;
+                case "8":
+                    Console.Clear();
+                    SortDn();
+                    PrintToConsole();
+                    break;
+                case "9":
+                    Console.Clear();
+                    employees.Clear();
+                    Console.WriteLine("\n\nПамять успешно очищена.");
+                    break;
+                case "10":
                     Environment.Exit(0);
                     break;
                 default:
@@ -78,7 +100,9 @@ namespace SkillBox_HW_7
         {
             Console.WriteLine(
                 "Введите название файла с числом N и его расширение (txt) или весь путь к данному файлу:");
-            path = Console.ReadLine();
+            _path = Console.ReadLine();
+
+            CheckTxtRequestPath();
         }
 
         /// <summary>
@@ -86,19 +110,24 @@ namespace SkillBox_HW_7
         /// </summary>
         private static void Load()
         {
-            using (StreamReader sr = new StreamReader(path))
+            using (StreamReader sr = new StreamReader(_path))
             {
-                titles = sr.ReadLine()?.Split('#');
-
                 while (!sr.EndOfStream)
                 {
                     string[] param = sr.ReadLine()?.Split('#');
 
-                    employees.Add(new Employee(Convert.ToInt32(param[0]), Convert.ToDateTime(param[1]), param[2],
-                        Convert.ToInt32(param[3]), Convert.ToInt32(param[4]), Convert.ToDateTime(param[5]),
-                        param[6]));
+                    if (param != null)
+                        employees.Add(
+                            new Employee(
+                                Convert.ToInt32(param[0]),
+                                Convert.ToDateTime(param[1]),
+                                param[2],
+                                Convert.ToInt32(param[3]),
+                                Convert.ToInt32(param[4]),
+                                Convert.ToDateTime(param[5]),
+                                param[6]));
 
-                    index++;
+                    _index++;
                 }
             }
         }
@@ -109,9 +138,8 @@ namespace SkillBox_HW_7
         private static void PrintToConsole()
         {
             Console.Clear();
-            Console.WriteLine(
-                $"{titles[0],6} {titles[1],16} {titles[2],15} {titles[3],20} {titles[4],5} {titles[5],15} " +
-                $"{titles[6],15}");
+            Console.WriteLine($"{_titles[0],6} {_titles[1],16} {_titles[2],15} {_titles[3],20} {_titles[4],5} " +
+                              $"{_titles[5],15} {_titles[6],15}");
 
             foreach (var item in employees)
             {
@@ -126,11 +154,17 @@ namespace SkillBox_HW_7
         {
             var arr = GetDataEmployee();
 
-            indexID = employees[index - 1].Id + 1;
-            index++;
+            _indexId = employees[_index - 1].Id + 1;
+            _index++;
             employees.Add(
-                new Employee(indexID, DateTime.Now, arr[0], Convert.ToInt32(arr[1]), Convert.ToInt32(arr[2]),
-                    Convert.ToDateTime(arr[3]), arr[4]));
+                new Employee(
+                    _indexId, 
+                    DateTime.Now, 
+                    arr[0], 
+                    Convert.ToInt32(arr[1]), 
+                    Convert.ToInt32(arr[2]),
+                    Convert.ToDateTime(arr[3]), 
+                    arr[4]));
         }
 
         /// <summary>
@@ -142,8 +176,9 @@ namespace SkillBox_HW_7
             var delId = GetCheckId();
       
             employees.RemoveAt(employees.FindIndex(item => item.Id == delId));
-            index--;
+            _index--;
         }
+      
         /// <summary>
         ///     Редактирование записи о сотруднике
         /// </summary>
@@ -154,20 +189,90 @@ namespace SkillBox_HW_7
             var i = employees.FindIndex(x => x.Id == id);
             var arr = GetDataEmployee();
 
-            indexID = employees[i].Id;
+            _indexId = employees[i].Id;
             employees.RemoveAt(i);
-            employees.Insert(i, 
-                new Employee(indexID, DateTime.Now, arr[0], Convert.ToInt32(arr[1]), Convert.ToInt32(arr[2]), 
-                    Convert.ToDateTime(arr[3]) , arr[4]));
+            employees.Insert(i, new Employee(
+                                    _indexId, 
+                                    DateTime.Now, 
+                                    arr[0], 
+                                    Convert.ToInt32(arr[1]), 
+                                    Convert.ToInt32(arr[2]), 
+                                    Convert.ToDateTime(arr[3]) , 
+                                    arr[4]));
         }
 
+        /// <summary>
+        ///     Сохранение БД Сотрудников в файл.
+        /// </summary>
+        private static void Save()
+        {
+            using (StreamWriter sw = new StreamWriter(_path))
+            {
+                foreach (var x in employees)
+                {
+                    sw.WriteLine(x.PrintToFile());
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Загрузка данных из файла в диапазоне дат.
+        /// </summary>
+        private static void UploadByDate()
+        {
+            Console.WriteLine("Введите диапазон дат, которые надо загрузить.");
+            Console.Write("C ");
+            var with = Convert.ToDateTime(Console.ReadLine());
+            Console.Write(" по ");
+            var by = Convert.ToDateTime(Console.ReadLine());
+            
+            using (StreamReader sr = new StreamReader(_path))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string[] param = sr.ReadLine()?.Split('#');
+
+                    if (param != null)
+                        if (Convert.ToDateTime(param[1])> with && Convert.ToDateTime(param[1]) < by)
+                        {
+                            employees.Add(
+                                new Employee(
+                                    Convert.ToInt32(param[0]),
+                                    Convert.ToDateTime(param[1]),
+                                    param[2],
+                                    Convert.ToInt32(param[3]),
+                                    Convert.ToInt32(param[4]),
+                                    Convert.ToDateTime(param[5]),
+                                    param[6]));
+                        }
+                        
+                    _index++;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Сортировка по возрастанию, по свойству Дата Создания записи
+        /// </summary>
+        private static void SortUp()
+        {
+            employees = employees.OrderBy(x => x.DataTimeRecordAdd).ToList();
+        }
+
+        /// <summary>
+        ///     Сортировка по убыванию, по свойству Дата Создания записи
+        /// </summary>
+        private static void SortDn()
+        {
+            employees = employees.OrderByDescending(x => x.DataTimeRecordAdd).ToList();
+        }
         /// <summary>
         ///     Проверка на наличие ID сотрудника в BD
         /// </summary>
         /// <returns></returns>
         private static int GetCheckId()
         {
-            var delId = 0;
+            int delId;
             while (true)
             {
                 delId = Convert.ToInt32(Console.ReadLine());
@@ -179,6 +284,10 @@ namespace SkillBox_HW_7
             return delId;
         }
 
+        /// <summary>
+        ///    Загрузка данных 
+        /// </summary>
+        /// <returns>Массив данных</returns>
         private static string[] GetDataEmployee()
         {
             string[] arr = new string[5];
@@ -200,6 +309,30 @@ namespace SkillBox_HW_7
             arr[4] = Console.ReadLine();
 
             return arr;
+        }
+       
+        /// <summary>
+        ///     Провека на наличе и расширение файла.
+        /// </summary>
+        private static void CheckTxtRequestPath()
+        {
+            var o = File.Exists(_path);
+
+            if (_path[_path.Length - 1] != 't' && _path[_path.Length - 2] != 'x' &&
+                _path[_path.Length - 3] != 't')
+            {
+                o = false;
+            }
+
+            if (_path.LastIndexOf('.') == -1 || o == false)
+            {
+                Console.Clear();
+                Console.WriteLine(
+                    "Такого файла не существует или у файла нет или неправильное расширение. Установите расширение (txt) " +
+                    "или создайте файл с данным расширением.");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
         }
     }
 }
