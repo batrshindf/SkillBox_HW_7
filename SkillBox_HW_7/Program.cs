@@ -4,13 +4,14 @@
     {
         private static void Main(string[] args)
         {
+            Interface inInterface = new Interface();
             Repository repository = new Repository();
-
+            
             repository.RequestPath();
 
             while (true)
             {
-                repository.Menu();
+                inInterface.Menu();
             }
         }
     }
