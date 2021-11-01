@@ -5,9 +5,8 @@
         private static void Main(string[] args)
         {
             Interface inInterface = new Interface();
-            Repository repository = new Repository();
             
-            repository.RequestPath();
+            inInterface.RequestPath();
 
             while (true)
             {

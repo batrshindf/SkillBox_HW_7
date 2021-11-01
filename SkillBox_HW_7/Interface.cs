@@ -5,6 +5,13 @@ namespace SkillBox_HW_7
     internal class Interface
     {
         private readonly Repository repository = new Repository();
+        private string _path;
+
+        public string Path
+        {
+            get => _path;
+            set => _path = value;
+        }
 
         /// <summary>
         ///     Пользовательское меню
@@ -41,7 +48,7 @@ namespace SkillBox_HW_7
                     Console.Clear();
                     repository.Save();
                     repository.PrintToConsole();
-                    Console.WriteLine($"\n\nДанные успешно сохранены в файл: {repository.Path}");
+                    Console.WriteLine($"\n\nДанные успешно сохранены в файл: {Path}");
                     break;
                 case "6":
                     UploadByDate();
@@ -66,7 +73,7 @@ namespace SkillBox_HW_7
                     Environment.Exit(0);
                     break;
                 case "11":
-                    repository.RequestPath();
+                    RequestPath();
                     Console.Clear();
                     break;
                 default:
@@ -130,6 +137,23 @@ namespace SkillBox_HW_7
             Console.Write("\nВведите Id сотрудника, запись которого нужно отредактировать: ");
 
             return repository.GetCheckId();
+        }
+
+        /// <summary>
+        ///     Путь к файлу. Запрашиваем путь к файлу с данными
+        /// </summary>
+        public void RequestPath()
+        {
+            var o = true;
+
+            while (o)
+            {
+                Console.WriteLine(
+                    "Введите название файла и его расширение (txt) или весь путь к данному файлу:");
+                Path = Console.ReadLine();
+
+                o = repository.CheckTxtRequestPath(o);
+            }
         }
     }
 }

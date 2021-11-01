@@ -7,7 +7,6 @@ namespace SkillBox_HW_7
 {
     internal class Repository
     {
-        private static string _path; // Путь к файлу
         private static int _index; // текущий элемент для добавления в employees (Счетчик записей о сотрудниках)
         private static int _indexId; // последний ID работника в DB
 
@@ -17,42 +16,19 @@ namespace SkillBox_HW_7
         }; // Массив заголовков
 
         public List<Employee> employees = new List<Employee>(); // Коллекция
-
-        public string Path
-        {
-            get => _path;
-            set => _path = value;
-        }
-
+        private Interface intrfc = new Interface();
         public int Index
         {
             get => _index;
             set => _index = value;
         }
-
-        /// <summary>
-        ///     Путь к файлу. Запрашиваем путь к файлу с данными
-        /// </summary>
-        public void RequestPath()
-        {
-            var o = true;
-
-            while (o)
-            {
-                Console.WriteLine(
-                    "Введите название файла и его расширение (txt) или весь путь к данному файлу:");
-                _path = Console.ReadLine();
-
-                o = CheckTxtRequestPath(o);
-            }
-        }
-
+        
         /// <summary>
         ///     Загрузка данных в память из файла
         /// </summary>
         public void Load()
         {
-            using (StreamReader sr = new StreamReader(_path))
+            using (StreamReader sr = new StreamReader(intrfc.Path))
             {
                 while (!sr.EndOfStream)
                 {
@@ -142,7 +118,7 @@ namespace SkillBox_HW_7
         /// </summary>
         public void Save()
         {
-            using (StreamWriter sw = new StreamWriter(_path))
+            using (StreamWriter sw = new StreamWriter(intrfc.Path))
             {
                 foreach (var x in employees)
                 {
@@ -158,7 +134,7 @@ namespace SkillBox_HW_7
         /// <param name="by">Конечная дата</param>
         public void GetUploadByDate(DateTime with, DateTime by)
         {
-            using (StreamReader sr = new StreamReader(_path))
+            using (StreamReader sr = new StreamReader(intrfc.Path))
             {
                 while (!sr.EndOfStream)
                 {
@@ -220,11 +196,12 @@ namespace SkillBox_HW_7
         /// <summary>
         ///     Провека на наличе и расширение файла.
         /// </summary>
-        private static bool CheckTxtRequestPath(bool o)
+        public bool CheckTxtRequestPath(bool o)
         {
-            if (_path.Length <= 3)
+            if (intrfc.Path.Length <= 3)
                 Console.WriteLine("Введите верное расширение файла (Имя файла.txt).");
-            else if (_path[_path.Length - 1] != 't' && _path[_path.Length - 2] != 'x' && _path[_path.Length - 3] != 't')
+            else if (intrfc.Path[intrfc.Path.Length - 1] != 't' && intrfc.Path[intrfc.Path.Length - 2] != 'x' && 
+                     intrfc.Path[intrfc.Path.Length - 3] != 't')
                 Console.WriteLine("Введите верное расширение файла (Имя файла.txt).");
             else o = false;
 
